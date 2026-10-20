@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('registro/', views.registrar_usuario, name='registro'),  # <--- NUEVA RUTA DE REGISTRO
 
     path('', views.lista_productos, name='lista_productos'),
     path('productos/nuevo/', views.crear_producto, name='crear_producto'),

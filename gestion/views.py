@@ -1,7 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm  
+from django.contrib import messages                     
 from .models import Producto, Pedido
 from .forms import ProductoForm, PedidoForm
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'¡Cuenta creada para {username}! Ya puedes iniciar sesión.')
+            return redirect('login')  # Asegúrate de tener la ruta de login configurada
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registro.html', {'form': form})
 
 @login_required
 def lista_productos(request):

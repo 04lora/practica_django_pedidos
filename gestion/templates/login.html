@@ -20,8 +20,14 @@
                 <label for="id_password" class="form-label">Contraseña</label>
                 <input type="password" name="password" class="form-control" required id="id_password">
             </div>
-            <button type="submit" class="btn btn-dark w-100">Ingresar</button>
+            <button type="submit" class="btn btn-dark w-100 mb-3">Ingresar</button>
         </form>
+
+        <div class="text-center">
+            <p class="mb-0 text-muted" style="font-size: 0.9rem;">
+                ¿No tienes una cuenta? <a href="{% url 'registro' %}" class="text-decoration-none">Regístrate aquí</a>
+            </p>
+        </div>
     </div>
 </body>
 </html>
