@@ -6,19 +6,30 @@
     <title>Registro - Pedidos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Oculta los textos de ayuda predeterminados y listas de Django */
-        .form-text, ul.help-text, ul {
+        /* Ocultar textos de ayuda largos de Django si deseas mantenerlo limpio */
+        .helptext, .form-text {
             display: none;
         }
     </style>
 </head>
 <body class="bg-light d-flex align-items-center justify-content-center vh-100">
-    <div class="card shadow p-4" style="width: 400px;">
+    <div class="card shadow p-4" style="width: 420px;">
         <h3 class="text-center mb-4">Registro</h3>
 
+        <!-- Si hay errores generales o de campos -->
         {% if form.errors %}
-            <div class="alert alert-danger p-2 small">
-                Por favor, verifica los datos ingresados.
+            <div class="alert alert-danger p-2 small mb-3">
+                <strong>Por favor corrige los errores:</strong>
+                <ul class="mb-0 ps-3">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
 
@@ -26,18 +37,18 @@
             {% csrf_token %}
 
             <div class="mb-3">
-                <label for="id_username" class="form-label">Nombre de usuario</label>
-                <input type="text" name="username" class="form-control" required id="id_username" placeholder="Tu usuario">
+                <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
+                {{ form.username }}
             </div>
 
             <div class="mb-3">
-                <label for="id_password1" class="form-label">Contraseña</label>
-                <input type="password" name="password1" class="form-control" required id="id_password1" placeholder="Tu contraseña">
+                <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña</label>
+                {{ form.password1 }}
             </div>
 
             <div class="mb-3">
-                <label for="id_password2" class="form-label">Confirmar contraseña</label>
-                <input type="password" name="password2" class="form-control" required id="id_password2" placeholder="Repite tu contraseña">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">Confirmar contraseña</label>
+                {{ form.password2 }}
             </div>
 
             <button type="submit" class="btn btn-dark w-100 mb-3">Registrarse</button>
@@ -49,5 +60,14 @@
             </p>
         </div>
     </div>
+
+    <!-- Script para inyectar automáticamente la clase form-control de Bootstrap a los inputs de Django -->
+    <script>
+        document.querySelectorAll('input').forEach(input => {
+            if (!input.classList.contains('form-control')) {
+                input.classList.add('form-control');
+            }
+        });
+    </script>
 </body>
 </html>
